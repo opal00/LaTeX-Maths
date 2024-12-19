@@ -1,0 +1,58 @@
+\begin{theo}{Cayley-Hamilton}{CH}
+        Soit $f \in \mathcal{L}(E)$.
+
+        Le polynôme caractéristique de $f$ est annulateur, \textit{i.e.} 
+        \[ \chi_f(f) = 0 \]
+\end{theo}
+
+    \begin{demo}{Démonstration dans le cas diagonalisable}{myred}
+        Supposons $M \in \mk{n}$ diagonalisable. Il existe $Q \in \GL_n(\mathbb{K})$ et $D = \diag(\lambda_1,\ldots,\lambda_n)$ tels que $M = Q D Q^{-1}$ où $\Sp(M) = \left\{\lambda_1,\ldots,\lambda_n\right\}$ où les $\lambda_i$ ne sont pas nécessairement distincts deux à deux. Alors $\chi_M(M) = Q \diag(\chi_M(\lambda_1), \ldots, \chi_M(\lambda_n)) Q^{-1} = 0$ car les $\lambda_i$ sont racines du polynôme caractéristique.
+
+        La densité des matrices diagonalisables dans $\mathcal{M}_n(\mathbb{C})$ permet de généraliser le résultat : Si $A \in \mathcal{M}_n(\mathbb{C})$, on peut l’approcher par une suite de matrices diagonalisables $A = \lim D_k$ où chaque $D_k$ vérifie par ce qui précède $\chi_{D_k}(D_k) = 0$. Or, 
+        \[ \et{P_k \limi{k}{+\infty} P \in \mathbb{C}_n[X]}{A_k \limi{k}{+\infty} A \in \mathcal{M}_n(\mathbb{C})} \implies P_k(A_k) \limi{k}{+\infty} P(A) \in \mathcal{M}_n(\mathbb{C}) \]    
+        On peut donc remarquer que $\chi_{D_k}(D_k) \limi{k}{+\infty} \chi_A(A)$ d’où $\chi_A(A) = 0$ par unicité de la limite.
+    \end{demo}
+
+    \begin{demo}{Démonstration dans le cas général}{myred}
+        Soit $u \in \mathcal{L}(E)$, où $E$ est un espace vectoriel de dimension finie. Montrer que $\chi_u(u) = 0$ revient à montrer que $\forall x \in E, \chi_u(u)(x) = 0$. La propriété étant immédiate pour $x = 0$, nous considérerons désormais un vecteur $x \in E$ non nul.
+        \begin{itemize}
+            \item $E$ étant de dimension finie, l’ensemble non vide $\mathcal{N}_x = \enspr{k \in \mathbb{N}^*}{(x,u(x), \ldots, u^{k-1}(x)) \text{ est libre}}$ est majoré. Notons $p$ son plus grand élément, et $F = \Vect((x,u(x), \ldots, u^{p-1}(x)))$. Par maximalité de $p$, 
+            \[ \exists \lambda_0,\ldots, \lambda_{p-1} \in \mathbb{K}, \quad u^p(x) = \lambda_0 x + \cdots \lambda_{p-1} u^{p-1}(x) \]   
+            \item $F$ est stable par $u$. En effet, si $y$ est combinaison linéaire de $x,u(x), \ldots, u^{p-1}(x)$, alors $u(y)$ l’est de même d’après la valeur de $u^p(x)$. Considérons la matrice de l’endomorphisme induit $\restr{u}{F}$ dans la base $(x, u(x), \ldots, u^{p-1}(x))$ et son polynôme caractéristique :
+            \[ \mat{}{\restr{u}{F}} = \begin{bmatrix}
+                0 & 0 & \cdots & 0 & \lambda_0 \\
+                1 & \ddots & \ddots & \vdots & \lambda_1 \\
+                0 & \ddots & \ddots & 0 & \vdots \\
+                \vdots & \ddots & \ddots & 0 & \vdots \\
+                0 & \cdots & 0 & 1 & \lambda_{p-1}
+            \end{bmatrix} \esp{et} \chi_{\restr{u}{F}} = \begin{vmatrix}
+                X & 0 & \cdots & 0 & -\lambda_0 \\
+                - 1 & \ddots & \ddots & \vdots & -\lambda_1 \\
+                0 & \ddots & \ddots & 0 & \vdots \\
+                \vdots & \ddots & \ddots & X & \vdots \\
+                0 & \cdots & 0 & - 1 & X - \lambda_{p-1}
+            \end{vmatrix} = X^p - \sum_{k=0}^{p-1} \lambda_k X^k \]   
+            par exemple en développant par rapport à la dernière colonne.
+            
+            Comme $u^p(x) = \lambda_0 x + \lambda_1 u(x) + \cdots + \lambda_{p-1} u^{p-1}(x)$, alors $\chi_{\restr{u}{F}}(u)(x) = 0$.
+            \item Comme $\chi_{\restr{u}{F}}$ divise $\chi_u$, il existe $P \in \mathbb{K}[X]$ tel que $\chi_{u} = P \times \chi_{\restr{u}{F}}$. Ainsi, $\chi_u(u) = P(u) \circ \chi_{\restr{u}{F}}(u)$ donc est nul sur $E$.
+        \end{itemize}
+    \end{demo}
+
+    \begin{omed}{Exemple}{myred}
+        Pour une matrice carrée d’ordre $2$ 
+        \[ M = \begin{pmatrix}
+            a & b \\
+            c & d
+        \end{pmatrix} \]  
+        on a $\chi_M = X^2 - (a+d)X + ad - bc$. Par conséquent, 
+        \[ M^2 - \tr(M) M + \det(M) I_2 = 0 \]
+    \end{omed}
+
+    \begin{omed}{Application}{myred}
+        Si $M \in \mk{n}$ est nilpotente, alors $M^n = 0$.
+    \end{omed}
+
+    \begin{demo}{Justification}{myred}
+        Si $M$ est nilpotente, il existe $k \in \mathbb{N}$ tel que $M^k = 0$ \textit{i.e.} $X^k$ est annulateur donc $\Sp(M) \subset \left\{0\right\}$. Si $\mathbb{K} = \mathbb{C}$, alors $\chi_M$ est scindé, donc $\chi_M = X^n$. Ainsi, $\chi_M(M) = 0 = M^n$.
+    \end{demo}
